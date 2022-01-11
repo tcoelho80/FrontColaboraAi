@@ -186,8 +186,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
 
       setState(address.uf.toUpperCase())
       
-      console.log(citiesByStateResponse.data);
-      setCities(citiesByStateResponse.data.sort())
+      setCities(citiesByStateResponse.data)
       
       setPublicPlace(address.logradouro)
       

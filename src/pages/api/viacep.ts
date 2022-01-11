@@ -12,7 +12,5 @@ export default async function handler(
 
   const { data: viaCepReaponse } = await viacepApi.get(viaCepUrl)
 
-  console.log(viaCepReaponse);
-
   return res.status(200).json(viaCepReaponse)
 }

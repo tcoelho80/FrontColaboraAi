@@ -1,5 +1,4 @@
-import axios from 'axios'
-import cors from 'cors'
+import { apiUser } from '../services/usuario'
 
 import {
   useContext,
@@ -56,17 +55,10 @@ interface IAuthContextData {
 }
 
 interface ServerResponse {
-  user: User
+  data: User
 }
 
 const AuthContext = createContext({} as IAuthContextData)
-const _cors = cors({
-  methods: ['GET', 'HEAD', 'POST', 'PUT'],
-})
-const baseURL = axios.create({
-  baseURL: 'https://localhost:3004/usuario/'
-})
-
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User)
@@ -77,13 +69,13 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function signIn(data: SignInRequest) {
     try {
-      var json = JSON.stringify(data)
-      const response = await api.post<ServerResponse>('auth', json)
-
+      
+      const response = await api.post(`http://localhost:8080/usuario/signin/${data.email}/${data.senha}`)
       if (response.data) {
-        setUser(response.data.user)
+        setUser(response.data)
 
-        localStorage.setItem(userStorageKey, JSON.stringify(response.data.user))
+        localStorage.setItem(userStorageKey, JSON.stringify(response.data))
+
       }
     } catch (err) {
       console.log(err)
@@ -92,22 +84,11 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function signUp(data: SignUpRequest) {
     try {
-   
-      //const response = await axios.post<ServerResponse>('http://localhost:3004/usuario/cria_usuario1', data)
-
       
-      var headers = {
-        // 'Access-Control-Allow-Origin': '*',
-        // 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE, HEAD, TRACE, CONNECT',
-        'Content-Type': 'application/json'
-      }
-      const response = await axios.post<ServerResponse>('https://localhost:3004/usuario/cria_usuario1', data, {"headers" : headers})
-      
-
-      //const response = await axios.post<ServerResponse>('https://localhost:3004/usuario/cria_usuario{}', JSON.stringify(data), {"headers" : headers})
+      const response = await api.post<ServerResponse>(`http://localhost:8080/usuario/cria_usuario/${data.nome}/${data.endereco}/${data.bairro}/${data.cidade}/${data.estado}/${data.cep}/${data.documento}/${data.email}/${data.senha}/${data.tipo}`)
       
       console.log(response)
-      
+
     } catch (err) {
       console.log(err)
     }
