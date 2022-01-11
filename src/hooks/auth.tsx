@@ -93,34 +93,21 @@ function AuthProvider({ children }: AuthProviderProps) {
   async function signUp(data: SignUpRequest) {
     try {
    
-      const response = await axios.post<ServerResponse>('http://localhost:3004/usuario/cria_usuario1', data)
+      //const response = await axios.post<ServerResponse>('http://localhost:3004/usuario/cria_usuario1', data)
 
       
-      // const cadUsuurl = `cria_usuario1`
-
-      // var headers = {
-      //   'Access-Control-Allow-Origin': '*',
-      //   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-      //   'Access-Control-Allow-Headers': 'Content-Type, Authorisation',
-      // }
-      // //axios.post('https://localhost:3004/usuario/cria_usuario1', data, {"headers" : headers})
-      // await baseURL.post(`cria_usuario1`, data)
+      var headers = {
+        // 'Access-Control-Allow-Origin': '*',
+        // 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE, HEAD, TRACE, CONNECT',
+        'Content-Type': 'application/json'
+      }
+      const response = await axios.post<ServerResponse>('https://localhost:3004/usuario/cria_usuario1', data, {"headers" : headers})
       
-      // var headers = {
-      //   'accept': '*/*',
-      //   'Content-Type': 'application/json',
-      //   'Sec-Fetch-Mode': 'no-cors'
-      // }
-      // var  corsOptions  = { 
-      //   origem : 'http://localhost:3000/' , 
-      //   optionsSuccessStatus : 200 //  alguns navegadores legados (IE11, várias SmartTVs) bloqueados em 204  
-      // }
-      // axios.post('http://localhost:3004/usuario/cria_usuario1', data, {
-      //   method: 'POST',
-      //   headers: {
-      //     "Content-Type": "application/json; charset=UTF-8;",
-      //   }
-      // })
+
+      //const response = await axios.post<ServerResponse>('https://localhost:3004/usuario/cria_usuario{}', JSON.stringify(data), {"headers" : headers})
+      
+      console.log(response)
+      
     } catch (err) {
       console.log(err)
     }
