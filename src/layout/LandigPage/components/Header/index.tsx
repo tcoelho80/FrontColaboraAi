@@ -104,17 +104,16 @@ export function Header({ setHeaderHight }: HeaderProps) {
 
   const [formMode, setFormMode] = useState<'signin' | 'signup'>('signin')
 
-  const [userType, setUserType] = useState('')
+  const [tipo, setUserType] = useState('')
   const [cep, setCep] = useState('')
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
+  const [senha, setPassword] = useState('')
+  const [nome, setName] = useState('')
   const [states, setStates] = useState<State[]>([] as State[])
-  const [state, setState] = useState('')
+  const [estado, setState] = useState('')
   const [cities, setCities] = useState<City[]>([] as City[])
-  const [city, setCity] = useState('')
-  const [publicPlace, setPublicPlace] = useState('')
-  const [cpfCnpj, setCpfCnpj] = useState('')
+  const [endereco, setPublicPlace] = useState('')
+  const [documento, setCpfCnpj] = useState('')
   const [cidade, setCidade] = useState('')
   const [bairro, setBairro] = useState('')
 
@@ -132,7 +131,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
         'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
       )
       
-      console.log(statesResponse.data);
+      
       setStates(statesResponse.data)
     }
 
@@ -146,7 +145,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
   function handleSignIn() {
     signIn({
       email,
-      password
+      senha
     })
 
     onClose()
@@ -154,15 +153,16 @@ export function Header({ setHeaderHight }: HeaderProps) {
 
   function handleSignUp() {
     const data = {
-      name,
-      email,
-      password,
-      userType,
+      nome,
+      endereco,
+      bairro,
+      cidade,
+      estado,
       cep,
-      publicPlace,
-      state,
-      city,
-      cpfCnpj
+      documento,
+      email,
+      senha,
+      tipo
     }
 
     signUp(data)
@@ -184,7 +184,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
         `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${address.uf}/distritos?orderBy=nome`
       )
 
-      setState(address.uf.toLocaleLowerCase())
+      setState(address.uf.toUpperCase())
       
       console.log(citiesByStateResponse.data);
       setCities(citiesByStateResponse.data.sort())
@@ -256,7 +256,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                   '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)'
               }}
             >
-              <Text fontSize="16px">{user.name ? user.name : 'login'}</Text>
+              <Text fontSize="16px">{user.nome ? user.nome : 'login'}</Text>
             </Flex>
             <Flex
               align="center"
@@ -324,16 +324,16 @@ export function Header({ setHeaderHight }: HeaderProps) {
                   </FormLabel>
 
                   <Input
-                    name="password"
-                    id="password"
+                    name="senha"
+                    id="senha"
                     placeholder="digite seu usuário"
-                    type="password"
+                    type="senha"
                     focusBorderColor="blue.600"
                     _hover={{
                       bgColor: '#e6e6e6'
                     }}
                     size="lg"
-                    value={password}
+                    value={senha}
                     onChange={(event) => setPassword(event.target.value)}
                   />
                 </FormControl>
@@ -367,7 +367,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     </FormLabel>
                     <Select
                       placeholder="Selecione uma opção"
-                      value={userType}
+                      value={tipo}
                       onChange={(event) => setUserType(event.target.value)}
                     >
                       <option value="creator">Criador</option>
@@ -381,8 +381,8 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     </FormLabel>
 
                     <Input
-                      name="name"
-                      id="name"
+                      name="nome"
+                      id="nome"
                       placeholder="digite seu nome"
                       type="text"
                       focusBorderColor="blue.600"
@@ -390,7 +390,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                         bgColor: '#e6e6e6'
                       }}
                       size="lg"
-                      value={name}
+                      value={nome}
                       onChange={(event) => setName(event.target.value)}
                     />
                   </FormControl>
@@ -428,7 +428,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                         bgColor: '#e6e6e6'
                       }}
                       size="lg"
-                      value={publicPlace}
+                      value={endereco}
                       onChange={(event) => setPublicPlace(event.target.value)}
                       //onChange={() => {}}
                     />
@@ -438,7 +438,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                       Estado
                     </FormLabel>
 
-                    <Select
+                    {/* <Select
                       placeholder="Selecione uma opção"
                       value={state}
                       onChange={() => {}}
@@ -451,7 +451,19 @@ export function Header({ setHeaderHight }: HeaderProps) {
                           {state.nome}
                         </option>
                       ))}
-                    </Select>
+                    </Select> */}
+                    <Input
+                      name="estado"
+                      id="estado"
+                      type="text"
+                      focusBorderColor="blue.600"
+                      _hover={{
+                        bgColor: '#e6e6e6'
+                      }}
+                      size="lg"
+                      value={estado}
+                      onChange={() => {}}
+                    />
                   </FormControl>
                   
                   <FormControl>
@@ -469,7 +481,6 @@ export function Header({ setHeaderHight }: HeaderProps) {
                       }}
                       size="lg"
                       value={cidade}
-                      //onChange={(event) => setPublicPlace(event.target.value)}
                       onChange={() => {}}
                     />
                   </FormControl>
@@ -498,15 +509,15 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     </FormLabel>
 
                     <Input
-                      name="cpf-cnpj"
-                      id="cpf-cnpj"
+                      name="documento"
+                      id="documento"
                       type="text"
                       focusBorderColor="blue.600"
                       _hover={{
                         bgColor: '#e6e6e6'
                       }}
                       size="lg"
-                      value={cpfCnpj}
+                      value={documento}
                       onChange={(event) => setCpfCnpj(event.target.value)}
                     />
                   </FormControl>
@@ -534,15 +545,15 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     </FormLabel>
 
                     <Input
-                      name="password"
-                      id="password"
-                      type="password"
+                      name="senha"
+                      id="senha"
+                      type="senha"
                       focusBorderColor="blue.600"
                       _hover={{
                         bgColor: '#e6e6e6'
                       }}
                       size="lg"
-                      value={password}
+                      value={senha}
                       onChange={(event) => setPassword(event.target.value)}
                     />
                   </FormControl>

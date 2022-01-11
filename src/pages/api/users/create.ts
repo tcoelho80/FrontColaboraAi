@@ -3,15 +3,16 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { usersStorage } from '../../../data/users'
 
 export type User = {
+  nome: string
+  endereco: string
+  bairro: string
+  cidade: string
+  estado: string
   cep: string
-  city: string
-  cpfCnpj: string
+  documento: string
   email: string
-  name: string
-  password: string
-  publicPlace: string
-  state: string
-  userType: string
+  senha: string
+  tipo: string
 }
 
 export default function createUserHandler(
@@ -19,15 +20,16 @@ export default function createUserHandler(
   res: NextApiResponse
 ) {
   const {
+    nome,
+    endereco,
+    bairro,
+    cidade,
+    estado,
     cep,
-    city,
-    cpfCnpj,
+    documento,
     email,
-    name,
-    password,
-    publicPlace,
-    state,
-    userType
+    senha,
+    tipo
   } = req.body
 
   const findUser = usersStorage.filter((user) => user.email === email)
@@ -37,15 +39,16 @@ export default function createUserHandler(
   }
 
   const user = {
+    nome,
+    endereco,
+    bairro,
+    cidade,
+    estado,
     cep,
-    city,
-    cpfCnpj,
+    documento,
     email,
-    name,
-    password,
-    publicPlace,
-    state,
-    userType
+    senha,
+    tipo
   }
 
   usersStorage.push(user)

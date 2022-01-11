@@ -13,7 +13,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const user = findUser[0]
 
-  if (user.password !== password) {
+  if (user.senha !== password) {
     return res.status(401).json({ message: `Wrong password.` })
   }
 
