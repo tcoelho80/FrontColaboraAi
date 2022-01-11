@@ -1,3 +1,6 @@
+import axios from 'axios'
+import cors from 'cors'
+
 import {
   useContext,
   useState,
@@ -13,32 +16,35 @@ interface AuthProviderProps {
 }
 
 interface User {
+  nome: string
+  endereco: string
+  bairro: string
+  cidade: string
+  estado: string
   cep: string
-  city: string
-  cpfCnpj: string
+  documento: string
   email: string
-  name: string
-  password: string
-  publicPlace: string
-  state: string
-  userType: string
+  senha: string
+  tipo: string
 }
 
 interface SignInRequest {
   email: string
-  password: string
+  senha: string
 }
 
+
 interface SignUpRequest {
+  nome: string
+  endereco: string
+  bairro: string
+  cidade: string
+  estado: string
   cep: string
-  city: string
-  cpfCnpj: string
+  documento: string
   email: string
-  name: string
-  password: string
-  publicPlace: string
-  state: string
-  userType: string
+  senha: string
+  tipo: string
 }
 
 interface IAuthContextData {
@@ -54,6 +60,13 @@ interface ServerResponse {
 }
 
 const AuthContext = createContext({} as IAuthContextData)
+const _cors = cors({
+  methods: ['GET', 'HEAD', 'POST', 'PUT'],
+})
+const baseURL = axios.create({
+  baseURL: 'https://localhost:3004/usuario/'
+})
+
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User)
@@ -64,7 +77,8 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function signIn(data: SignInRequest) {
     try {
-      const response = await api.post<ServerResponse>('auth', data)
+      var json = JSON.stringify(data)
+      const response = await api.post<ServerResponse>('auth', json)
 
       if (response.data) {
         setUser(response.data.user)
@@ -78,7 +92,35 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function signUp(data: SignUpRequest) {
     try {
-      api.post('users/create', data)
+   
+      const response = await axios.post<ServerResponse>('http://localhost:3004/usuario/cria_usuario1', data)
+
+      
+      // const cadUsuurl = `cria_usuario1`
+
+      // var headers = {
+      //   'Access-Control-Allow-Origin': '*',
+      //   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+      //   'Access-Control-Allow-Headers': 'Content-Type, Authorisation',
+      // }
+      // //axios.post('https://localhost:3004/usuario/cria_usuario1', data, {"headers" : headers})
+      // await baseURL.post(`cria_usuario1`, data)
+      
+      // var headers = {
+      //   'accept': '*/*',
+      //   'Content-Type': 'application/json',
+      //   'Sec-Fetch-Mode': 'no-cors'
+      // }
+      // var  corsOptions  = { 
+      //   origem : 'http://localhost:3000/' , 
+      //   optionsSuccessStatus : 200 //  alguns navegadores legados (IE11, várias SmartTVs) bloqueados em 204  
+      // }
+      // axios.post('http://localhost:3004/usuario/cria_usuario1', data, {
+      //   method: 'POST',
+      //   headers: {
+      //     "Content-Type": "application/json; charset=UTF-8;",
+      //   }
+      // })
     } catch (err) {
       console.log(err)
     }
