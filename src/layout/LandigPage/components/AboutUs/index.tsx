@@ -17,6 +17,10 @@ import {
   useMediaQuery
 } from '@chakra-ui/react'
 import { useEffect, useRef } from 'react'
+import {
+  FaPhone,
+  FaMailBulk
+} from 'react-icons/fa'
 
 export function AboutUs() {
   const is2xl = useBreakpointValue({ base: false, '2xl': true })
@@ -80,8 +84,24 @@ export function AboutUs() {
           <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader>Nossos Contatos</DrawerHeader>
-
-            <DrawerBody>Teste</DrawerBody>
+            <div>
+            <h3><DrawerBody><FaPhone
+                textDecoration='teste'
+                size={24}
+                style={{ cursor: 'pointer' }}
+                color="#E76F51"
+              />
+              <b>(11) 99999 6699</b></DrawerBody></h3>
+              <DrawerBody><FaMailBulk
+                size={24}
+                style={{ cursor: 'pointer' }}
+                color="#E76F51"
+              />
+              <b>colaboraai.mba@gmail.com</b></DrawerBody>
+            </div>
+            <DrawerBody>Atendimento de segunda a sexta, das 7h as 18h</DrawerBody>  
+            
+            
           </DrawerContent>
         </Drawer>
       </Flex>

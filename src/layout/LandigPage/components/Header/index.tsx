@@ -26,6 +26,7 @@ import { api } from '../../../../services/api'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 
+
 interface HeaderProps {
   setHeaderHight(height: number | undefined): void
 }
@@ -100,7 +101,7 @@ interface ViaCepRepsonse {
 }
 
 export function Header({ setHeaderHight }: HeaderProps) {
-  const { signIn, signOut, signUp, user } = useAuth()
+  const { signIn, signOut, signUp, user, clear } = useAuth()
 
   const [formMode, setFormMode] = useState<'signin' | 'signup'>('signin')
 
@@ -124,6 +125,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
   const isSm = useBreakpointValue({ base: false, sm: true })
 
   const router = useRouter()
+  
 
   useEffect(() => {
     async function statesResponse() {
@@ -143,14 +145,16 @@ export function Header({ setHeaderHight }: HeaderProps) {
   }, [containerRef])
 
   function handleSignIn() {
-    signIn({
-      email,
-      senha
-    })
-
+    
+    signIn({email,senha})
+    
     onClose()
+    
+    clear()
+    router.push('/')
   }
 
+  
   function handleSignUp() {
     const data = {
       nome,
@@ -166,8 +170,8 @@ export function Header({ setHeaderHight }: HeaderProps) {
     }
 
     signUp(data)
-
     setFormMode('signin')
+    clear()
   }
 
   async function handleCep(cep: string) {
@@ -203,6 +207,8 @@ export function Header({ setHeaderHight }: HeaderProps) {
 
     router.push('/')
   }
+
+  
 
   return (
     <>
@@ -326,7 +332,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     name="senha"
                     id="senha"
                     placeholder="digite seu usuário"
-                    type="senha"
+                    type="password"
                     focusBorderColor="blue.600"
                     _hover={{
                       bgColor: '#e6e6e6'
@@ -334,6 +340,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     size="lg"
                     value={senha}
                     onChange={(event) => setPassword(event.target.value)}
+                    
                   />
                 </FormControl>
               </Flex>
@@ -436,21 +443,6 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     <FormLabel htmlFor="uf" color="gray.500">
                       Estado
                     </FormLabel>
-
-                    {/* <Select
-                      placeholder="Selecione uma opção"
-                      value={state}
-                      onChange={() => {}}
-                    >
-                      {states.map((state, index) => (
-                        <option
-                          key={index}
-                          value={state.sigla.toLocaleLowerCase()}
-                        >
-                          {state.nome}
-                        </option>
-                      ))}
-                    </Select> */}
                     <Input
                       name="estado"
                       id="estado"
@@ -544,9 +536,10 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     </FormLabel>
 
                     <Input
+                      
                       name="senha"
                       id="senha"
-                      type="senha"
+                      type="password"
                       focusBorderColor="blue.600"
                       _hover={{
                         bgColor: '#e6e6e6'

@@ -1,6 +1,6 @@
 import { apiUser } from '../services/usuario'
 
-import {
+import React, {
   useContext,
   useState,
   createContext,
@@ -9,6 +9,7 @@ import {
 } from 'react'
 
 import { api } from '../services/api'
+
 
 interface AuthProviderProps {
   children: ReactNode
@@ -51,6 +52,7 @@ interface IAuthContextData {
   signIn(data: SignInRequest): Promise<void>
   signUp(data: SignUpRequest): Promise<void>
   signOut(): Promise<void>
+  clear():Promise<void>
   storageLoading: boolean
 }
 
@@ -63,6 +65,8 @@ const AuthContext = createContext({} as IAuthContextData)
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User)
 
+  const [signInRequest, setSignInRequest] = useState<SignInRequest>({} as SignInRequest)
+
   const [storageLoading, setStorageLoading] = useState(true)
 
   const userStorageKey = '@colabora-ai:user'
@@ -70,13 +74,13 @@ function AuthProvider({ children }: AuthProviderProps) {
   async function signIn(data: SignInRequest) {
     try {
       
-      const response = await api.post(`http://localhost:8080/usuario/signin/${data.email}/${data.senha}`)
-      if (response.data) {
-        setUser(response.data)
+      const response = await api.post(`http://localhost:8100/usuario/signin/${data.email}/${data.senha}`)
+      setUser(response.data)
+      localStorage.setItem(userStorageKey, JSON.stringify(response.data))
 
-        localStorage.setItem(userStorageKey, JSON.stringify(response.data))
-
-      }
+      data.email = ''
+      data.senha = ''
+      
     } catch (err) {
       console.log(err)
     }
@@ -85,7 +89,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   async function signUp(data: SignUpRequest) {
     try {
       
-      const response = await api.post<ServerResponse>(`http://localhost:8080/usuario/cria_usuario/${data.nome}/${data.endereco}/${data.bairro}/${data.cidade}/${data.estado}/${data.cep}/${data.documento}/${data.email}/${data.senha}/${data.tipo}`)
+      const response = await api.post<ServerResponse>(`http://localhost:8100/usuario/cria_usuario/${data.nome}/${data.endereco}/${data.bairro}/${data.cidade}/${data.estado}/${data.cep}/${data.documento}/${data.email}/${data.senha}/${data.tipo}`)
       
       console.log(response)
 
@@ -97,6 +101,12 @@ function AuthProvider({ children }: AuthProviderProps) {
   async function signOut() {
     setUser({} as User)
     localStorage.removeItem(userStorageKey)
+  }
+
+  async function clear() {
+    console.log('Entrou aqui')
+
+    
   }
 
   useEffect(() => {
@@ -121,6 +131,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         signIn,
         signUp,
         signOut,
+        clear,
         storageLoading
       }}
     >

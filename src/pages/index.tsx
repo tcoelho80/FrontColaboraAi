@@ -9,9 +9,11 @@ import { NewsLetter } from '../layout/LandigPage/components/NewsLetter'
 import { SuccessCampaigns } from '../layout/LandigPage/components/SuccessCampaigns'
 import { TopBanner } from '../layout/LandigPage/components/TopBanner'
 
+const userStorageKey = '@colabora-ai:user'
+
 const Home: NextPage = () => {
   useEffect(() => {
-    console.log(usersStorage)
+    console.log(localStorage.getItem(userStorageKey))
   }, [usersStorage])
 
   return (

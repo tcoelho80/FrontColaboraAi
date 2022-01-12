@@ -105,8 +105,8 @@ export function Cards() {
                     <Text color="gray.600">{card.description}</Text>
                   </Box>
                   <Flex justify="center">
-                    {card.type === 'creator' && user.userType === 'creator' && (
-                      <Link href={`/campaigns/register/${user.userType}`}>
+                    {card.type === 'creator' && user.tipo === 'creator' && (
+                      <Link href={`/campaigns/register/${user.tipo}`}>
                         <Button size="lg" bg="#E76F51" color="white" w="100%">
                           Criar
                         </Button>
@@ -114,8 +114,8 @@ export function Cards() {
                     )}
 
                     {card.type === 'collaborator' &&
-                      user.userType === 'collaborator' && (
-                        <Link href={`/campaigns/register/${user.userType}`}>
+                      user.tipo === 'collaborator' && (
+                        <Link href={`/campaigns/register/${user.tipo}`}>
                           <Button size="lg" bg="#E76F51" color="white" w="100%">
                             Colaborar
                           </Button>
@@ -123,8 +123,8 @@ export function Cards() {
                       )}
 
                     {card.type === 'recipient' &&
-                      user.userType === 'recipient' && (
-                        <Link href={`/campaigns/register/${user.userType}`}>
+                      user.tipo === 'recipient' && (
+                        <Link href={`/campaigns/register/${user.tipo}`}>
                           <Button size="lg" bg="#E76F51" color="white" w="100%">
                             Se Beneficiar
                           </Button>
@@ -156,9 +156,9 @@ export function Cards() {
               <Table variant="striped" colorScheme="pink">
                 <TableCaption>
                   {`Campanhas que participei como ${
-                    (user.userType === 'creator' && 'criador') ||
-                    (user.userType === 'collaborator' && 'colaborador') ||
-                    (user.userType === 'recipient' && 'beneficiário')
+                    (user.tipo === 'creator' && 'criador') ||
+                    (user.tipo === 'collaborator' && 'colaborador') ||
+                    (user.tipo === 'recipient' && 'beneficiário')
                   }`}
                 </TableCaption>
                 <Thead>

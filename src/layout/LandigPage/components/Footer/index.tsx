@@ -5,7 +5,8 @@ import {
   FaFacebook,
   FaTwitter,
   FaLinkedin,
-  FaYoutube
+  FaYoutube,
+  FaPhone
 } from 'react-icons/fa'
 
 export function Footer() {

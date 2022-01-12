@@ -11,20 +11,60 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 import { api } from '../../../../services/api'
 
 interface CampaignRegisterFormProps {
   registerType: string | string[]
 }
 
-function handleSubmit(data) {
-  api.post('create-campaign', data)
-}
+
+
+
 
 export function CampaignRegisterForm({
   registerType
 }: CampaignRegisterFormProps) {
   const router = useRouter()
+  //Recupera os dados do Usuário.
+  var objUser = JSON.parse(localStorage.getItem('@colabora-ai:user'));
+  //Variaveis Auto carregaveis
+  
+  const [email, setEmailResp] = useState(objUser.email)
+  const [idUsu, setIdusu] = useState(objUser.idusuario)
+
+  
+
+  //Variaveis carregaveis conforme preenchimento
+  const [nomeCamp, setCampanha] = useState('')
+  const [idCategoria, setCategoria] = useState('')
+  const [descricao, setDescricao] = useState('')
+  const [telefone, setTelefone] = useState('')
+  const [local, setLocal] = useState('')
+  const [dtEvento, setDtEvento] = useState('')
+  const [nomeResponsavel, setNomeResponsavel] = useState(registerType === 'creator' ? objUser.nome : '')
+  const [nomeColaborador, setNomeColaborador] = useState(registerType === 'collaborator' ? objUser.nome : '')
+  const [nomeColaboradorBeneficiario, setNomeBeneficiario] = useState(registerType === 'recipient' ? objUser.nome : '')
+  const [idcamp, setIdcamp] = useState('')
+  
+
+  async function handleSubmit() {
+    if (registerType === 'creator'){
+      //Falta testar
+      const response = await api.post(`http://localhost:8200/Campanha/cria_Campanha/${nomeCamp}/${nomeCamp}/${descricao}/${nomeResponsavel}/${idCategoria}/${email}/${telefone}/${local}/${dtEvento}/${idUsu}`)
+    }
+
+    if (registerType === 'collaborator'){
+      //Falta Chamada
+    }
+
+    if (registerType === 'recipient'){
+      //Falta Chamada
+    }
+    
+  }
+  
+  console.log(nomeCamp)
 
   return (
     <Flex flex="1" w="100%" justify="center" py="8">
@@ -43,7 +83,9 @@ export function CampaignRegisterForm({
                     bgColor: '#e6e6e6'
                   }}
                   size="lg"
-                  onChange={(event) => {}}
+                  value={nomeCamp}
+                  onChange={(event) => setCampanha(event.target.value)}
+                  
                 />
               </FormControl>
               <FormControl>
@@ -51,8 +93,8 @@ export function CampaignRegisterForm({
 
                 <Select
                   placeholder="Selecione uma opção"
-                  value={'lalala'}
-                  onChange={(event) => {}}
+                  value={idCategoria}
+                  onChange={(event) => setCategoria(event.target.value)}
                 >
                   <option value="1">Doação de alimentos</option>
                   <option value="2">Doação de brinquedos</option>
@@ -70,8 +112,8 @@ export function CampaignRegisterForm({
                 <FormLabel color="gray.500">Campanha</FormLabel>
                 <Select
                   placeholder="Selecione uma opção"
-                  value={'lalala'}
-                  onChange={(event) => {}}
+                  value={idcamp}
+                  onChange={(event) => setIdcamp(event.target.value)}
                 >
                   <option value="1">Campanha 1</option>
                   <option value="2">Campanha 2</option>
@@ -92,8 +134,8 @@ export function CampaignRegisterForm({
                   bgColor: '#e6e6e6'
                 }}
                 size="lg"
-                value={'lalala'}
-                onChange={(event) => {}}
+                value={descricao}
+                onChange={(event) => setDescricao(event.target.value)}
               />
             </FormControl>
           </SimpleGrid>
@@ -109,15 +151,14 @@ export function CampaignRegisterForm({
                   bgColor: '#e6e6e6'
                 }}
                 size="lg"
-                onChange={(event) => {}}
+                value={nomeResponsavel}
+                onChange={(event) => setNomeResponsavel(event.target.value)}
               />
             </FormControl>
-            {registerType !== 'creator' && (
+            
+            {registerType === 'collaborator' && (
               <FormControl>
-                <FormLabel color="gray.500">{`Nome do ${
-                  (registerType === 'collaborator' && 'Colaborador') ||
-                  (registerType === 'recipient' && 'Beneficiário')
-                }`}</FormLabel>
+                <FormLabel color="gray.500">Nome do Colaborador</FormLabel>
 
                 <Input
                   placeholder="digite seu nome"
@@ -127,7 +168,25 @@ export function CampaignRegisterForm({
                     bgColor: '#e6e6e6'
                   }}
                   size="lg"
-                  onChange={(event) => {}}
+                  value={nomeColaborador}
+                  onChange={(event) => setNomeColaborador(event.target.value)}
+                />
+              </FormControl>
+            )}
+            {registerType === 'recipient' && (
+              <FormControl>
+                <FormLabel color="gray.500">Nome do Beneficiário</FormLabel>
+
+                <Input
+                  placeholder="digite seu nome"
+                  type="text"
+                  focusBorderColor="blue.600"
+                  _hover={{
+                    bgColor: '#e6e6e6'
+                  }}
+                  size="lg"
+                  value={nomeColaboradorBeneficiario}
+                  onChange={(event) => setNomeBeneficiario(event.target.value)}
                 />
               </FormControl>
             )}
@@ -144,6 +203,7 @@ export function CampaignRegisterForm({
                   bgColor: '#e6e6e6'
                 }}
                 size="lg"
+                value={email}
                 onChange={(event) => {}}
               />
             </FormControl>
@@ -158,7 +218,8 @@ export function CampaignRegisterForm({
                   bgColor: '#e6e6e6'
                 }}
                 size="lg"
-                onChange={(event) => {}}
+                value={telefone}
+                onChange={(event) => setTelefone(event.target.value)}
               />
             </FormControl>
           </SimpleGrid>
@@ -174,8 +235,8 @@ export function CampaignRegisterForm({
                   bgColor: '#e6e6e6'
                 }}
                 size="lg"
-                value={'lalala'}
-                onChange={(event) => {}}
+                value={local}
+                onChange={(event) => setLocal(event.target.value)}
               />
             </FormControl>
             <FormControl>
@@ -189,7 +250,8 @@ export function CampaignRegisterForm({
                   bgColor: '#e6e6e6'
                 }}
                 size="lg"
-                onChange={(event) => {}}
+                value={dtEvento}
+                onChange={(event) => setDtEvento(event.target.value)}
               />
             </FormControl>
             <FormControl>
@@ -203,7 +265,8 @@ export function CampaignRegisterForm({
                   bgColor: '#e6e6e6'
                 }}
                 size="lg"
-                onChange={(event) => {}}
+                value={dtEvento}
+                onChange={(event) => setDtEvento(event.target.value)}
               />
             </FormControl>
           </SimpleGrid>
@@ -218,7 +281,7 @@ export function CampaignRegisterForm({
             >
               Voltar
             </Button>
-            <Button size="lg" bg="#E76F51" color="white">
+            <Button size="lg" bg="#E76F51" color="white" onClick={handleSubmit}>
               Registrar
             </Button>
           </Stack>
