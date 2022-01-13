@@ -19,7 +19,14 @@ interface CampaignRegisterFormProps {
 }
 
 
-
+interface Camp {
+  descricao: string
+  nomeresponsavel: string
+  id: number
+  local: string
+  dtevento: string
+  horaevento: string
+}
 
 
 export function CampaignRegisterForm({
@@ -48,7 +55,7 @@ export function CampaignRegisterForm({
   const [idcamp, setIdcamp] = useState('')
   const [horaEvento, setHoraEvento] = useState('')
   const [objCampanhas, setCampanhas] = useState<{ idcampanha: number; nomecamp: string }[]>([])
-  //const [objCampanha, setCamp] = useState<{ idcampanha: number; nomecamp: string }>()
+  const [camp, setCamp] = useState<Camp>({} as Camp)
 
 
   
@@ -66,7 +73,14 @@ export function CampaignRegisterForm({
 
   useEffect(() => {
     async function recuperaDadosCampanha() {
-
+      if (registerType !== 'creator'){
+        console.log({idcamp})
+        if (idcamp !== ''){
+          const response = await api.get(`http://localhost:8200/Campanha/PesquisarByIDCampanha/${idcamp}/`)
+          setCamp(response.data)
+        }
+        
+      }
     }
     recuperaDadosCampanha()
   }, [idcamp])
@@ -81,7 +95,7 @@ export function CampaignRegisterForm({
 
       localStorage.setItem('@colabora-ai:campanha', JSON.stringify(response.data))
 
-      alert('Campanha Cadastrada com Sucesso!')
+      alert('Campanha cadastrada com sucesso!')
       router.push('/')
     }
 
@@ -91,11 +105,18 @@ export function CampaignRegisterForm({
     }
 
     if (registerType === 'collaborator') {
-      //Falta Chamada
+      
+      const response = await api.post(`http://localhost:8400/Colabora/cria_Colabora/${idcamp}/${idUsu}/${email}/${nomeColaborador}/${telefone}`)
+
+      alert('Colaborador cadastrado com sucesso!')
+      router.push('/')
     }
 
     if (registerType === 'recipient') {
-      //Falta Chamada
+      const response = await api.post(`http://localhost:8300/Beneficiario/criaBeneficiario/${nomeColaboradorBeneficiario}/${idcamp}/${idUsu}`)
+
+      alert('Beneficiário cadastrado com sucesso!')
+      router.push('/')
     }
 
 
@@ -163,6 +184,7 @@ export function CampaignRegisterForm({
             )}
           </SimpleGrid>
           <SimpleGrid minChildWidth="280px" spacing="4" w="100%">
+            {registerType === 'creator' && (
             <FormControl>
               <FormLabel color="gray.500">Descrição da Campanha</FormLabel>
 
@@ -175,15 +197,15 @@ export function CampaignRegisterForm({
                 }}
                 size="lg"
                 value={descricao}
-                onChange={() => {}}
+                onChange={(event) => setDescricao(event.target.value)}
               />
             </FormControl>
-          </SimpleGrid>
-          <SimpleGrid minChildWidth="280px" spacing="4" w="100%">
+            )}
+            {registerType !== 'creator' && (
             <FormControl>
-              <FormLabel color="gray.500">Nome do Responsável</FormLabel>
+              <FormLabel color="gray.500">Descrição da Campanha</FormLabel>
 
-              <Input
+              <Textarea
                 placeholder="digite seu nome"
                 type="text"
                 focusBorderColor="blue.600"
@@ -191,11 +213,51 @@ export function CampaignRegisterForm({
                   bgColor: '#e6e6e6'
                 }}
                 size="lg"
-                value={nomeResponsavel}
-                onChange={(event) => setNomeResponsavel(event.target.value)}
+                value={camp.descricao}
+                onChange={() => {}}
               />
             </FormControl>
+            )}
+          </SimpleGrid>
+          <SimpleGrid minChildWidth="280px" spacing="4" w="100%">
+            {registerType === 'creator' && (
+              <FormControl>
+              
+                <FormLabel color="gray.500">Nome do Responsável</FormLabel>
 
+                <Input
+                  placeholder="digite seu nome"
+                  type="text"
+                  focusBorderColor="blue.600"
+                  _hover={{
+                    bgColor: '#e6e6e6'
+                  }}
+                  size="lg"
+                  value={nomeResponsavel}
+                  onChange={(event) => setNomeResponsavel(event.target.value)}
+                />
+                
+              </FormControl>
+            )}
+            {registerType !== 'creator' && (
+              <FormControl>
+              
+                <FormLabel color="gray.500">Nome do Responsável</FormLabel>
+
+                <Input
+                  placeholder="digite seu nome"
+                  type="text"
+                  focusBorderColor="blue.600"
+                  _hover={{
+                    bgColor: '#e6e6e6'
+                  }}
+                  size="lg"
+                  value={camp.nomeresponsavel}
+                  onChange={() => {}}
+                />
+                
+              </FormControl>
+            )}
             {registerType === 'collaborator' && (
               <FormControl>
                 <FormLabel color="gray.500">Nome do Colaborador</FormLabel>
@@ -264,51 +326,108 @@ export function CampaignRegisterForm({
             </FormControl>
           </SimpleGrid>
           <SimpleGrid minChildWidth="280px" spacing="4" w="100%">
-            <FormControl>
-              <FormLabel color="gray.500">Local do Encontro</FormLabel>
+            {registerType === 'creator' && (
+              <FormControl>
+                <FormLabel color="gray.500">Local do Encontro</FormLabel>
 
-              <Input
-                placeholder="digite seu nome"
-                type="text"
-                focusBorderColor="blue.600"
-                _hover={{
-                  bgColor: '#e6e6e6'
-                }}
-                size="lg"
-                value={local}
-                onChange={(event) => setLocal(event.target.value)}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel color="gray.500">Data do Encontro</FormLabel>
+                <Input
+                  placeholder="digite seu nome"
+                  type="text"
+                  focusBorderColor="blue.600"
+                  _hover={{
+                    bgColor: '#e6e6e6'
+                  }}
+                  size="lg"
+                  value={local}
+                  onChange={(event) => setLocal(event.target.value)}
+                />
+              </FormControl>
+            )}
+            {registerType !== 'creator' && (
+              <FormControl>
+                <FormLabel color="gray.500">Local do Encontro</FormLabel>
 
-              <Input
-                placeholder="digite seu nome"
-                type="date"
-                focusBorderColor="blue.600"
-                _hover={{
-                  bgColor: '#e6e6e6'
-                }}
-                size="lg"
-                value={dtEvento}
-                onChange={(event) => setDtEvento(event.target.value)}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel color="gray.500">Hora do Encontro</FormLabel>
+                <Input
+                  placeholder="digite seu nome"
+                  type="text"
+                  focusBorderColor="blue.600"
+                  _hover={{
+                    bgColor: '#e6e6e6'
+                  }}
+                  size="lg"
+                  value={camp.local}
+                  onChange={(event) => setLocal(event.target.value)}
+                />
+              </FormControl>
+            )}
+            {registerType === 'creator' && (
+              <FormControl>
+                <FormLabel color="gray.500">Data do Encontro</FormLabel>
 
-              <Input
-                placeholder="digite seu nome"
-                type="time"
-                focusBorderColor="blue.600"
-                _hover={{
-                  bgColor: '#e6e6e6'
-                }}
-                size="lg"
-                value={horaEvento}
-                onChange={(event) => setHoraEvento(event.target.value)}
-              />
-            </FormControl>
+                <Input
+                  placeholder="digite seu nome"
+                  type="date"
+                  focusBorderColor="blue.600"
+                  _hover={{
+                    bgColor: '#e6e6e6'
+                  }}
+                  size="lg"
+                  value={dtEvento}
+                  onChange={(event) => setDtEvento(event.target.value)}
+                />
+              </FormControl>
+            )}
+            {registerType !== 'creator' && (
+              <FormControl>
+                <FormLabel color="gray.500">Data do Encontro</FormLabel>
+
+                <Input
+                  placeholder="digite seu nome"
+                  type="text"
+                  focusBorderColor="blue.600"
+                  _hover={{
+                    bgColor: '#e6e6e6'
+                  }}
+                  size="lg"
+                  value={camp.dtevento}
+                  onChange={(event) => setDtEvento(event.target.value)}
+                />
+              </FormControl>
+            )}
+            {registerType === 'creator' && (
+              <FormControl>
+                <FormLabel color="gray.500">Hora do Encontro</FormLabel>
+
+                <Input
+                  
+                  type="time"
+                  focusBorderColor="blue.600"
+                  _hover={{
+                    bgColor: '#e6e6e6'
+                  }}
+                  size="lg"
+                  value={horaEvento}
+                  onChange={(event) => setHoraEvento(event.target.value)}
+                />
+              </FormControl>
+            )}
+            {registerType !== 'creator' && (
+              <FormControl>
+                <FormLabel color="gray.500">Hora do Encontro</FormLabel>
+
+                <Input
+                  
+                  type="text"
+                  focusBorderColor="blue.600"
+                  _hover={{
+                    bgColor: '#e6e6e6'
+                  }}
+                  size="lg"
+                  value={camp.horaevento}
+                  onChange={(event) => setHoraEvento(event.target.value)}
+                />
+              </FormControl>
+            )}
           </SimpleGrid>
         </VStack>
 

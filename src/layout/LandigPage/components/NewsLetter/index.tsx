@@ -9,9 +9,27 @@ import {
   Text,
   useBreakpointValue
 } from '@chakra-ui/react'
+import router from 'next/router'
+import { useState } from 'react'
+import { api } from '../../../../services/api'
 
 export function NewsLetter() {
   const isSm = useBreakpointValue({ base: false, sm: true })
+  const [email, setEmail] = useState('')
+
+  async function handleSubmit() {
+
+    
+    const response = await api.post(`http://localhost:8100/email/cadastra_email/${email}`)
+
+    localStorage.setItem('@colabora-ai:campanha', JSON.stringify(response.data))
+
+    alert('E-mail cadastrado com sucesso, logo receberá nossa newsletter!')
+    setEmail('')
+    router.push('/')
+  }
+
+    
 
   return (
     <Flex py="8" justify="center">
@@ -41,7 +59,9 @@ export function NewsLetter() {
               <Heading size={isSm ? 'lg' : 'sm'} color="white">
                 FIQUE POR DENTRO DAS NOVIDADES
               </Heading>
-              <Text color="white" mt={isSm ? 2 : 4}>
+              <Text color="white" 
+                    mt={isSm ? 2 : 4}
+              >
                 Cadastre-se na nossa newsletter
               </Text>
             </Flex>
@@ -53,12 +73,16 @@ export function NewsLetter() {
               justify="center"
               align="center"
             >
-              <Input size={isSm ? 'lg' : 'sm'} />
+              <Input size={isSm ? 'lg' : 'sm'} 
+                     value={email}
+                     onChange={(event) => setEmail(event.target.value)}
+               />
               <Button
                 bg="white"
                 color="#264653"
                 mt="6"
                 size={isSm ? 'lg' : 'sm'}
+                onClick={handleSubmit}
               >
                 cadastrar
               </Button>
@@ -66,6 +90,7 @@ export function NewsLetter() {
           </Flex>
         </Flex>
       </Container>
+      
     </Flex>
   )
 }
