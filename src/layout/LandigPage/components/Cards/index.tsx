@@ -26,8 +26,10 @@ import {
   Tr
 } from '@chakra-ui/react'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 import { useAuth } from '../../../../hooks/auth'
+import { api } from '../../../../services/api'
 
 
 export function Cards() {
@@ -62,6 +64,30 @@ export function Cards() {
   const { user } = useAuth()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [objCampanhas, setCampanhas] = useState([])
+  const [objColaborador, setColaborador] = useState([])
+  const [objBeneficiario, setBeneficiario] = useState([])
+
+  useEffect(() => {
+    
+    async function recuperaDados() {
+      if (user.tipo === 'creator'){
+        const responseCamp = await api.get(`endpoint certo`)
+        setCampanhas(responseCamp.data)
+      }
+      
+      if (user.tipo === 'collaborator'){
+        const responseCamp = await api.get(`endpoint certo`)
+        setCampanhas(responseCamp.data)
+      }
+
+      if (user.tipo === 'recipient'){
+        const responseCamp = await api.get(`endpoint certo`)
+        setCampanhas(responseCamp.data)
+      }
+    }
+    recuperaDados()
+  }, [user])
 
   return (
     <>
