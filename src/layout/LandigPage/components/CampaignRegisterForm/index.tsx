@@ -51,8 +51,10 @@ export function CampaignRegisterForm({
   //const [objCampanha, setCamp] = useState<{ idcampanha: number; nomecamp: string }>()
 
 
+  
 
   useEffect(() => {
+    
     async function recuperaDados() {
       if (registerType !== 'creator') {
         const responseCamp = await api.get(`http://localhost:8200/Campanha/PesquisarAllCampanha/`)

@@ -30,6 +30,10 @@ import Link from 'next/link'
 import { useAuth } from '../../../../hooks/auth'
 
 export function Cards() {
+
+  var objUser = JSON.parse(localStorage.getItem('@colabora-ai:user'));
+
+ 
   const isXl = useBreakpointValue({ base: false, xl: true })
 
   const cards = [
