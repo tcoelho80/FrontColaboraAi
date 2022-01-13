@@ -10,6 +10,7 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
+import { Item } from 'framer-motion/types/components/Reorder/Item'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { api } from '../../../../services/api'
@@ -28,6 +29,12 @@ export function CampaignRegisterForm({
   const router = useRouter()
   //Recupera os dados do Usuário.
   var objUser = JSON.parse(localStorage.getItem('@colabora-ai:user'));
+
+  //Cria variavel de Objeto de Campanhas
+  var objCampanha = null;
+
+  //Cria variavel de Objeto de Campanhas do Getall
+  var objCampanhas = null;
   //Variaveis Auto carregaveis
   
   const [email, setEmailResp] = useState(objUser.email)
@@ -46,25 +53,47 @@ export function CampaignRegisterForm({
   const [nomeColaborador, setNomeColaborador] = useState(registerType === 'collaborator' ? objUser.nome : '')
   const [nomeColaboradorBeneficiario, setNomeBeneficiario] = useState(registerType === 'recipient' ? objUser.nome : '')
   const [idcamp, setIdcamp] = useState('')
+  const [horaEvento, setHoraEvento] = useState('')
   
 
   async function handleSubmit() {
     if (registerType === 'creator'){
-      //Falta testar
-      const response = await api.post(`http://localhost:8200/Campanha/cria_Campanha/${nomeCamp}/${nomeCamp}/${descricao}/${nomeResponsavel}/${idCategoria}/${email}/${telefone}/${local}/${dtEvento}/${idUsu}`)
+      
+      const response = await api.post(`http://localhost:8200/Campanha/cria_Campanha/${nomeCamp}/${descricao}/${nomeResponsavel}/${idCategoria}/${email}/${telefone}/${local}/${dtEvento}/${horaEvento}/${idUsu}`)
+      
+      localStorage.setItem('@colabora-ai:campanha', JSON.stringify(response.data))
+      
+      alert('Campanha Cadastrada com Sucesso!')
+      router.push('/')
     }
 
+    if (registerType !== 'creator'){
+      objCampanha = localStorage.getItem('@colabora-ai:campanha')
+      console.log(objCampanha)
+    }
+
+
     if (registerType === 'collaborator'){
-      //Falta Chamada
+      //Ainda não sei se é aqui
+      //const response = await api.get(`http://localhost:8200/Campanha/PesquisarByIDCampanha/`)   
+      
+      //Retorna todas as campanhas
+      const response = await api.get(`http://localhost:8200/Campanha/PesquisarAllCampanha`)
+      
+      objCampanhas = response.data
+
+      console.log(objCampanhas)
     }
 
     if (registerType === 'recipient'){
       //Falta Chamada
     }
+
+
     
   }
   
-  console.log(nomeCamp)
+  
 
   return (
     <Flex flex="1" w="100%" justify="center" py="8">
@@ -115,9 +144,18 @@ export function CampaignRegisterForm({
                   value={idcamp}
                   onChange={(event) => setIdcamp(event.target.value)}
                 >
-                  <option value="1">Campanha 1</option>
+                  
+                  <option
+                    v-for="(option, index) in objCampanhas"
+                    value="option[idcampanha]"
+                    key="index"
+                  >
+                      option[nomecamp]
+                  </option>
+                               
+                  {/* <option value="1">Campanha 1</option>
                   <option value="2">Campanha 2</option>
-                  <option value="3">Campanha 3</option>
+                  <option value="3">Campanha 3</option> */}
                 </Select>
               </FormControl>
             )}
@@ -265,8 +303,8 @@ export function CampaignRegisterForm({
                   bgColor: '#e6e6e6'
                 }}
                 size="lg"
-                value={dtEvento}
-                onChange={(event) => setDtEvento(event.target.value)}
+                value={horaEvento}
+                onChange={(event) => setHoraEvento(event.target.value)}
               />
             </FormControl>
           </SimpleGrid>
