@@ -10,9 +10,8 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/react'
-import { Item } from 'framer-motion/types/components/Reorder/Item'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { api } from '../../../../services/api'
 
 interface CampaignRegisterFormProps {
@@ -33,15 +32,9 @@ export function CampaignRegisterForm({
   //Cria variavel de Objeto de Campanhas
   var objCampanha = null;
 
-  //Cria variavel de Objeto de Campanhas do Getall
-  var objCampanhas = null;
-  //Variaveis Auto carregaveis
   
   const [email, setEmailResp] = useState(objUser.email)
   const [idUsu, setIdusu] = useState(objUser.idusuario)
-
-  
-
   //Variaveis carregaveis conforme preenchimento
   const [nomeCamp, setCampanha] = useState('')
   const [idCategoria, setCategoria] = useState('')
@@ -54,46 +47,60 @@ export function CampaignRegisterForm({
   const [nomeColaboradorBeneficiario, setNomeBeneficiario] = useState(registerType === 'recipient' ? objUser.nome : '')
   const [idcamp, setIdcamp] = useState('')
   const [horaEvento, setHoraEvento] = useState('')
+  const [objCampanhas, setCampanhas] = useState<{ idcampanha: number; nomecamp: string }[]>([])
+  //const [objCampanha, setCamp] = useState<{ idcampanha: number; nomecamp: string }>()
+
+
+
+  useEffect(() => {
+    async function recuperaDados() {
+      if (registerType !== 'creator') {
+        const responseCamp = await api.get(`http://localhost:8200/Campanha/PesquisarAllCampanha/`)
+        setCampanhas(responseCamp.data)
+      }
+    }
+    recuperaDados()
+  }, [registerType])
+
+  useEffect(() => {
+    async function recuperaDadosCampanha() {
+
+    }
+    recuperaDadosCampanha()
+  }, [idcamp])
   
 
   async function handleSubmit() {
-    if (registerType === 'creator'){
-      
+
+    console.log(registerType)
+    if (registerType === 'creator') {
+
       const response = await api.post(`http://localhost:8200/Campanha/cria_Campanha/${nomeCamp}/${descricao}/${nomeResponsavel}/${idCategoria}/${email}/${telefone}/${local}/${dtEvento}/${horaEvento}/${idUsu}`)
-      
+
       localStorage.setItem('@colabora-ai:campanha', JSON.stringify(response.data))
-      
+
       alert('Campanha Cadastrada com Sucesso!')
       router.push('/')
     }
 
-    if (registerType !== 'creator'){
+    if (registerType !== 'creator') {
       objCampanha = localStorage.getItem('@colabora-ai:campanha')
       console.log(objCampanha)
     }
 
-
-    if (registerType === 'collaborator'){
-      //Ainda não sei se é aqui
-      //const response = await api.get(`http://localhost:8200/Campanha/PesquisarByIDCampanha/`)   
-      
-      //Retorna todas as campanhas
-      const response = await api.get(`http://localhost:8200/Campanha/PesquisarAllCampanha`)
-      
-      objCampanhas = response.data
-
-      console.log(objCampanhas)
+    if (registerType === 'collaborator') {
+      //Falta Chamada
     }
 
-    if (registerType === 'recipient'){
+    if (registerType === 'recipient') {
       //Falta Chamada
     }
 
 
-    
+
   }
-  
-  
+
+
 
   return (
     <Flex flex="1" w="100%" justify="center" py="8">
@@ -114,7 +121,7 @@ export function CampaignRegisterForm({
                   size="lg"
                   value={nomeCamp}
                   onChange={(event) => setCampanha(event.target.value)}
-                  
+
                 />
               </FormControl>
               <FormControl>
@@ -144,18 +151,11 @@ export function CampaignRegisterForm({
                   value={idcamp}
                   onChange={(event) => setIdcamp(event.target.value)}
                 >
-                  
-                  <option
-                    v-for="(option, index) in objCampanhas"
-                    value="option[idcampanha]"
-                    key="index"
-                  >
-                      option[nomecamp]
-                  </option>
-                               
-                  {/* <option value="1">Campanha 1</option>
-                  <option value="2">Campanha 2</option>
-                  <option value="3">Campanha 3</option> */}
+                  {objCampanhas.map((item, index) =>
+                    <option key={index} value={item.idcampanha}>
+                      {item.nomecamp}
+                    </option>)}
+
                 </Select>
               </FormControl>
             )}
@@ -173,7 +173,7 @@ export function CampaignRegisterForm({
                 }}
                 size="lg"
                 value={descricao}
-                onChange={(event) => setDescricao(event.target.value)}
+                onChange={() => {}}
               />
             </FormControl>
           </SimpleGrid>
@@ -193,7 +193,7 @@ export function CampaignRegisterForm({
                 onChange={(event) => setNomeResponsavel(event.target.value)}
               />
             </FormControl>
-            
+
             {registerType === 'collaborator' && (
               <FormControl>
                 <FormLabel color="gray.500">Nome do Colaborador</FormLabel>
@@ -242,7 +242,7 @@ export function CampaignRegisterForm({
                 }}
                 size="lg"
                 value={email}
-                onChange={(event) => {}}
+                onChange={(event) => { }}
               />
             </FormControl>
             <FormControl>

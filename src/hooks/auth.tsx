@@ -104,8 +104,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function clear() {
-    console.log('Entrou aqui')
-
+    
     
   }
 
