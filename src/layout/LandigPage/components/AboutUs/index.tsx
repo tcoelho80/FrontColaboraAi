@@ -84,17 +84,17 @@ export function AboutUs() {
           <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader>Nossos Contatos</DrawerHeader>
-            <div>
-            <h3><DrawerBody><FaPhone
+            <div>         
+            <h3><DrawerBody style={{ display: 'flex'}} ><FaPhone
                 textDecoration='teste'
                 size={24}
-                style={{ cursor: 'pointer' }}
-                color="#E76F51"
+                style={{ cursor: 'pointer', marginRight: '10px', display: 'inline' }}
+                color="#E76F51"                
               />
-              <b>(11) 99999 6699</b></DrawerBody></h3>
-              <DrawerBody><FaMailBulk
+              <b>(11) 99999 6699</b></DrawerBody ></h3>
+              <DrawerBody style={{ display: 'flex'}}><FaMailBulk
                 size={24}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', marginRight: '10px',  display: 'inline' }}
                 color="#E76F51"
               />
               <b>colaboraai.mba@gmail.com</b></DrawerBody>
