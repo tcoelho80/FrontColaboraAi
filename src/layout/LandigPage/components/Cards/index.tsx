@@ -60,31 +60,41 @@ export function Cards() {
     }
   ]
 
-  
+
   const { user } = useAuth()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [objCampanhas, setCampanhas] = useState([])
+
+  const [camps, setCamps] = useState([])
   const [objColaborador, setColaborador] = useState([])
   const [objBeneficiario, setBeneficiario] = useState([])
 
   useEffect(() => {
-    
+
     async function recuperaDados() {
+      // const { user } = useAuth()
       if (user.tipo === 'creator'){
-        const responseCamp = await api.get(`endpoint certo`)
-        setCampanhas(responseCamp.data)
-      }
-      
-      if (user.tipo === 'collaborator'){
-        const responseCamp = await api.get(`endpoint certo`)
-        setCampanhas(responseCamp.data)
+
+        const responseCamp = await api.get(`http://localhost:8200/Campanha/PesquisarByUsuario/${user.idusuario}`)
+
+        setCamps(responseCamp.data)
+
+        console.log(camps)
       }
 
-      if (user.tipo === 'recipient'){
-        const responseCamp = await api.get(`endpoint certo`)
-        setCampanhas(responseCamp.data)
+      if (user.tipo !== 'creator'){
+        const responseCamp = await api.get(`http://localhost:8200/Campanha/PesquisarByUsuario/1`)
+
+        setCamps(responseCamp.data)
+
+        console.log(camps)
+
       }
+
+      // if (user.tipo === 'recipient'){
+      //   const responseCamp = await api.get(`endpoint certo`)
+      //   setCampanhas(responseCamp.data)
+      // }
     }
     recuperaDados()
   }, [user])
@@ -194,33 +204,17 @@ export function Cards() {
                   <Tr>
                     <Th>Campanha</Th>
                     <Th>Categoria</Th>
-                    <Th>Colaboradores</Th>
-                    <Th>Beneficiários</Th>
                     <Th>Ativo</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  <Tr>
-                    <Td>Coleta Seletiva</Td>
-                    <Td>Multirão de Limpeza</Td>
-                    <Td>1.500</Td>
-                    <Td>0</Td>
-                    <Td>Sim</Td>
-                  </Tr>
-                  <Tr>
-                    <Td>PET Lovers</Td>
-                    <Td>Doação de Animais</Td>
-                    <Td>357</Td>
-                    <Td>295</Td>
-                    <Td>Sim</Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Alegria das Crianças</Td>
-                    <Td>Doação de brinquedos</Td>
-                    <Td>2.950</Td>
-                    <Td>3.500</Td>
-                    <Td>Sim</Td>
-                  </Tr>
+                {camps.map((item) =>
+                    <tr>
+                      <td>{item.nomecamp}</td>
+                      <td>{item.descricao}</td>
+                      <td>Sim</td>
+                    </tr>
+                    )}
                 </Tbody>
               </Table>
             </Flex>

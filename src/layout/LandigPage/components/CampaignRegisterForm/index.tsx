@@ -135,7 +135,7 @@ export function CampaignRegisterForm({
                 <FormLabel color="gray.500">Nome da Campanha</FormLabel>
 
                 <Input
-                  placeholder="digite seu nome"
+                  placeholder="digite o nome da Campanha"
                   type="text"
                   focusBorderColor="blue.600"
                   _hover={{
@@ -189,7 +189,7 @@ export function CampaignRegisterForm({
               <FormLabel color="gray.500">Descrição da Campanha</FormLabel>
 
               <Textarea
-                placeholder="digite seu nome"
+                placeholder="digite a descrição da Campanha"
                 type="text"
                 focusBorderColor="blue.600"
                 _hover={{
@@ -206,7 +206,7 @@ export function CampaignRegisterForm({
               <FormLabel color="gray.500">Descrição da Campanha</FormLabel>
 
               <Textarea
-                placeholder="digite seu nome"
+                placeholder="digite a descrição da Campanha"
                 type="text"
                 focusBorderColor="blue.600"
                 _hover={{
@@ -226,7 +226,7 @@ export function CampaignRegisterForm({
                 <FormLabel color="gray.500">Nome do Responsável</FormLabel>
 
                 <Input
-                  placeholder="digite seu nome"
+                  placeholder="digite o nome do Responsável"
                   type="text"
                   focusBorderColor="blue.600"
                   _hover={{
@@ -245,7 +245,7 @@ export function CampaignRegisterForm({
                 <FormLabel color="gray.500">Nome do Responsável</FormLabel>
 
                 <Input
-                  placeholder="digite seu nome"
+                  placeholder="digite o nome do Responsável"
                   type="text"
                   focusBorderColor="blue.600"
                   _hover={{
@@ -263,7 +263,7 @@ export function CampaignRegisterForm({
                 <FormLabel color="gray.500">Nome do Colaborador</FormLabel>
 
                 <Input
-                  placeholder="digite seu nome"
+                  placeholder="digite o nome do Colaborador"
                   type="text"
                   focusBorderColor="blue.600"
                   _hover={{
@@ -280,7 +280,7 @@ export function CampaignRegisterForm({
                 <FormLabel color="gray.500">Nome do Beneficiário</FormLabel>
 
                 <Input
-                  placeholder="digite seu nome"
+                  placeholder="digite o nome do Benficiário"
                   type="text"
                   focusBorderColor="blue.600"
                   _hover={{
@@ -298,7 +298,7 @@ export function CampaignRegisterForm({
               <FormLabel color="gray.500">E-mail</FormLabel>
 
               <Input
-                placeholder="digite seu nome"
+                placeholder="digite seu e-mail"
                 type="text"
                 focusBorderColor="blue.600"
                 _hover={{
@@ -313,7 +313,7 @@ export function CampaignRegisterForm({
               <FormLabel color="gray.500">Telefone</FormLabel>
 
               <Input
-                placeholder="digite seu nome"
+                placeholder="digite seu Telefone"
                 type="text"
                 focusBorderColor="blue.600"
                 _hover={{
@@ -331,7 +331,7 @@ export function CampaignRegisterForm({
                 <FormLabel color="gray.500">Local do Encontro</FormLabel>
 
                 <Input
-                  placeholder="digite seu nome"
+                  placeholder="digite o Local do Encontro"
                   type="text"
                   focusBorderColor="blue.600"
                   _hover={{
@@ -348,7 +348,7 @@ export function CampaignRegisterForm({
                 <FormLabel color="gray.500">Local do Encontro</FormLabel>
 
                 <Input
-                  placeholder="digite seu nome"
+                  placeholder="digite o Locaal do Encontro"
                   type="text"
                   focusBorderColor="blue.600"
                   _hover={{
@@ -365,7 +365,7 @@ export function CampaignRegisterForm({
                 <FormLabel color="gray.500">Data do Encontro</FormLabel>
 
                 <Input
-                  placeholder="digite seu nome"
+                  
                   type="date"
                   focusBorderColor="blue.600"
                   _hover={{
@@ -382,7 +382,7 @@ export function CampaignRegisterForm({
                 <FormLabel color="gray.500">Data do Encontro</FormLabel>
 
                 <Input
-                  placeholder="digite seu nome"
+                  
                   type="text"
                   focusBorderColor="blue.600"
                   _hover={{

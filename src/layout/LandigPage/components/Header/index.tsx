@@ -312,7 +312,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                   <Input
                     name="email"
                     id="email"
-                    placeholder="digite seu usuário"
+                    placeholder="digite seu usuário (e-mail)"
                     type="email"
                     focusBorderColor="blue.600"
                     _hover={{
@@ -331,7 +331,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                   <Input
                     name="senha"
                     id="senha"
-                    placeholder="digite seu usuário"
+                    placeholder="digite sua senha"
                     type="password"
                     focusBorderColor="blue.600"
                     _hover={{
@@ -500,6 +500,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     </FormLabel>
 
                     <Input
+                      placeholder="digite seu documento"
                       name="documento"
                       id="documento"
                       type="text"
@@ -518,6 +519,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     </FormLabel>
 
                     <Input
+                      placeholder="digite seu e-mail"
                       name="email"
                       id="email"
                       type="email"
@@ -536,7 +538,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     </FormLabel>
 
                     <Input
-                      
+                      placeholder="digite uma senha"
                       name="senha"
                       id="senha"
                       type="password"
@@ -553,6 +555,7 @@ export function Header({ setHeaderHight }: HeaderProps) {
                     <FormLabel color="gray.500">Confirmar Senha</FormLabel>
 
                     <Input
+                      placeholder="confirme a senha"
                       type="password"
                       focusBorderColor="blue.600"
                       _hover={{

@@ -16,6 +16,7 @@ interface AuthProviderProps {
 }
 
 interface User {
+  idusuario: number
   nome: string
   endereco: string
   bairro: string
